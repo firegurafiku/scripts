@@ -1,0 +1,8 @@
+#!/bin/sh
+# Alias script to run tabbed with xterm to get usable tabbed terminal
+# for daily work.
+# --
+# Written by Firegurafiku, Oct 2012.
+# Licensed under the terms of WTFPL of any version.
+exec tabbed xterm -into
+
