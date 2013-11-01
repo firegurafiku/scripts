@@ -3,7 +3,7 @@
 # documentation. Useful for calling from IDE as an external tool.
 # Command line syntax:
 #
-#   $ ide-run-doxygen [-q] [-v] [-c DOXYFILE] [DIRECTORY]
+#   $ ide-run-doxygen [-q] [-v] [-d DOXYFILE] [DIRECTORY]
 #
 # where DOXYFILE is a pattern for find -name and DIRECTORY specifies
 # a directory to start search from.
@@ -27,7 +27,6 @@ shift `expr $OPTIND - 1`
 DIRECTORY="."
 [ ! -z "$1" ] && DIRECTORY="$1"
 
-# 
 find "$DIRECTORY" -name "$DOXYFILE" -print | while read FILENAME 
 do
     DOXYDIR=`dirname "$FILENAME"`
