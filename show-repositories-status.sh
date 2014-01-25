@@ -21,6 +21,7 @@ getRepositoryStatus_svn() {
 getRepositoryStatus_git() {
     cd "$1"
     RES=""
+
     [ `git log --format=oneline --branches --not --remotes | wc -l` -ne 0 ] \
        && RES="p${RES}"
 
