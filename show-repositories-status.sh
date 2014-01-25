@@ -11,30 +11,47 @@ getRepositoryType() {
 }
 
 getRepositoryStatus_svn() {
-    [ `svn status "$1" | wc -l` -eq 0 ] \
-        && echo "clean" || echo "dirty"
+    cd "$1"
+    [ `svn status | wc -l` -eq 0 ] && echo "-" || echo "*"
 }
 
 getRepositoryStatus_git() {
-    echo "unknown"
+    cd "$1"
+    RES=""
+    [ `git log --format=oneline --branches --not --remotes | wc -l` -ne 0 ] \
+       && RES="p${RES}"
+
+    [ `git stash show 2>/dev/null | wc -l` -ne 0 ] \
+        && RES="s${RES}"
+
+    [ -d ".git/rebase-merge" -o -d ".git/rebase-apply" ] \
+        && RES="b${RES}"
+
+    [ `git status --porcelain | wc -l` -ne 0 ] \
+        && RES="*${RES}"
+
+    [ ! -z "$RES" ] && echo "$RES" || echo "-"
 }
 
 getRepositoryStatus_hg() {
-    echo "unknown"
+    echo "?"
 }
 
 getRepositoryStatus_darcs() {
-    echo "unknown"
+    echo "?"
 }
 
 # --- main ---
 
-if [ "$#" -ne 1 ] ; then
-    echo "Error: exactly one argument must be given." 1>&2
+if [ \( $# -eq 2 \) -a \( ":$1" = ":--dirty" -o ":$1" = ":--all" \) -a -d "$2" ]
+then :
+else
+    echo "Usage: $0 (--all|--dirty) PROJECTS_ROOT" 2>&1
     exit 1
 fi
 
-ROOT="$1"
+MODE="$1"
+ROOT="$2"
 
 find "$ROOT" \
     -exec [ -d {}/.svn -o -d {}/.git -o -d {}/.hg -o -d {}/_darcs ] \;\
@@ -42,7 +59,10 @@ find "$ROOT" \
 do
     TYPE=`getRepositoryType "$DIR"`
     STAT=`getRepositoryStatus_${TYPE} "$DIR"`
-    printf "%-10s %-10s %s" "$TYPE" "$STAT" "$DIR"
+
+    [ ":$MODE" = ":--dirty" -a ":$STAT" = ":-" ] &&
+        continue
+
+    printf "%-5s %-5s %s" "$TYPE" "$STAT" "$DIR"
     echo
 done
-
