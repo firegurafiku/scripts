@@ -16,16 +16,14 @@ the Internet. Anyway, I think you can do anything the fuck you want
 to with this code.
 '''
 
-if [ "$1" == "--help" ]
-then
+if [ ":$1" == ":--help" ] ; then
     echo "$HELP_MSG"
     exit
 fi
 
-LINES=${1:-10}
+LINES="${1:-10}"
 sed -ne 's/^\s*[0-9][0-9]*\s\s*\(\S\S*\).*$/\1/p' \
     | sort \
     | uniq -c \
     | sort -nr \
     | head -n "$LINES"
-
