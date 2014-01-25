@@ -15,6 +15,9 @@ getRepositoryStatus_svn() {
     [ `svn status | wc -l` -eq 0 ] && echo "-" || echo "*"
 }
 
+#
+# @see http://stackoverflow.com/a/3338774/1447225
+# @see http://stackoverflow.com/a/3921928/1447225
 getRepositoryStatus_git() {
     cd "$1"
     RES=""
