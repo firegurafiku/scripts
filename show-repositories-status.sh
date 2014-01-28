@@ -7,7 +7,8 @@
 #   "*" uncommitted changes
 #   "s" stashed changes (for Git only)
 #   "p" unpushed commits (for Git only)
-#   "b" rebase is in progress (for Git only)
+#   "b" bisect is in progress (for Git only)
+#   "r" rebase is in progress (for Git only)
 #   "?" unknown or unsupported state
 # See project's wiki on Bitbucket for more information
 # ---
@@ -42,8 +43,11 @@ getRepositoryStatus_git() {
     [ `git stash show 2>/dev/null | wc -l` -ne 0 ] \
         && RES="s${RES}"
 
-    [ -d ".git/rebase-merge" -o -d ".git/rebase-apply" ] \
+    [ -f ".git/BISECT_START" ] \
         && RES="b${RES}"
+
+    [ -d ".git/rebase-merge" -o -d ".git/rebase-apply" ] \
+        && RES="r${RES}"
 
     [ `git status --porcelain | wc -l` -ne 0 ] \
         && RES="*${RES}"
