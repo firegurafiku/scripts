@@ -60,28 +60,52 @@ getRepositoryStatus_darcs() {
 }
 
 # --- main ---
+USAGE="
+Usage: $0 [-adtHh?] [--] DIR [DIR ...]
+Arguments are directories to find repositories in. Options must precede
+arguments and stand for the following:
+  -a ("all")   -- ontput statuses for all repositories (default)
+  -d ("dirty") -- output statuses only for unclean repositories
+  -t ("text")  -- output in plain text (default)
+  -H ("HTML")  -- output in HTML format"
 
-if [ \( $# -eq 2 \) -a \( ":$1" = ":--dirty" -o ":$1" = ":--all" \) -a -d "$2" ]
-then :
-else
-    echo "Usage: $0 (--all|--dirty) PROJECTS_ROOT" 2>&1
+MODE="all"
+FORMAT="text"
+while getopts 'adtHh' OPT; do
+    case "$OPT" in
+        a) MODE="all" ;;
+        d) MODE="dirty" ;;
+        t) FORMAT="text" ;;
+        H) FORMAT="html" ;;
+        h|\?)
+           echo "$USAGE" >&2
+           exit 1
+           ;;
+    esac
+done
+
+shift `expr $OPTIND - 1`
+
+if [ "$#" -lt 1 ] ; then
+    echo "$USAGE" >&2
     exit 1
 fi
 
-MODE="$1"
-ROOT="$2"
-
-find "$ROOT" \
+[ "$FORMAT" = "html" ] && echo "<table>"
+find "$@" \
     -exec [ -d {}/.svn -o -d {}/.git -o -d {}/.hg -o -d {}/_darcs ] \;\
     -print -prune | sort | while read DIR
-    -print -prune | while read DIR
 do
     TYPE=`getRepositoryType "$DIR"`
     STAT=`getRepositoryStatus_${TYPE} "$DIR"`
 
-    [ ":$MODE" = ":--dirty" -a ":$STAT" = ":-" ] &&
+    [ "$MODE" = "dirty" -a ":$STAT" = ":-" ] &&
         continue
 
-    printf "%-5s %-5s %s" "$TYPE" "$STAT" "$DIR"
+    [ ":$STAT" != ":-" ] && ATTRS="bgcolor=pink" || ATTRS="bgcolor='light blue'"
+    [ "$FORMAT" = "html" ] \
+        && printf "<tr><td>%s&nbsp;</td><td $ATTRS>&nbsp;%s&nbsp;</td><td>&nbsp;%s</td></tr>" "$TYPE" "$STAT" "$DIR" \
+        || printf "%-5s %-5s %s" "$TYPE" "$STAT" "$DIR"
     echo
 done
+[ "$FORMAT" = "html" ] && echo "</table>"
