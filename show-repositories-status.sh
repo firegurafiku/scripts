@@ -49,7 +49,7 @@ getRepositoryStatus_git() {
     [ -d ".git/rebase-merge" -o -d ".git/rebase-apply" ] \
         && RES="r${RES}"
 
-    [ `git status --porcelain | wc -l` -ne 0 ] \
+    [ `git status --porcelain --ignore-submodules | wc -l` -ne 0 ] \
         && RES="*${RES}"
 
     [ ! -z "$RES" ] && echo "$RES" || echo "-"
