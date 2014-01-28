@@ -59,6 +59,7 @@ ROOT="$2"
 
 find "$ROOT" \
     -exec [ -d {}/.svn -o -d {}/.git -o -d {}/.hg -o -d {}/_darcs ] \;\
+    -print -prune | sort | while read DIR
     -print -prune | while read DIR
 do
     TYPE=`getRepositoryType "$DIR"`
