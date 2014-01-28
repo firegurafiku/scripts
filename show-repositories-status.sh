@@ -1,4 +1,18 @@
 #!/bin/sh
+# Recursively searches for repositories, checks them for local modifications
+# and prints their status in abbreviated form. SVN and Git are currently
+# supported, while Mercurial and Darcs are just stubs. Abbreviations are the
+# following:
+#   "-" repository is clean
+#   "*" uncommitted changes
+#   "s" stashed changes (for Git only)
+#   "p" unpushed commits (for Git only)
+#   "b" rebase is in progress (for Git only)
+#   "?" unknown or unsupported state
+# See project's wiki on Bitbucket for more information
+# ---
+# Copyright (c) Pavel Kretov, Jul 2012.
+# Licensed under the terms of WTFPL of any version.
 set -o errexit
 set -o nounset
 
