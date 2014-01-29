@@ -106,10 +106,18 @@ do
     [ "$MODE" = "dirty" -a ":$STAT" = ":-" ] &&
         continue
 
-    [ ":$STAT" != ":-" ] && ATTRS="bgcolor=pink" || ATTRS="bgcolor='light blue'"
-    [ "$FORMAT" = "html" ] \
-        && printf "<tr><td>%s&nbsp;</td><td $ATTRS>&nbsp;%s&nbsp;</td><td>&nbsp;%s</td></tr>" "$TYPE" "$STAT" "$DIR" \
-        || printf "%-5s %-5s %s" "$TYPE" "$STAT" "$DIR"
-    echo
+    if [ "$FORMAT" = "html" ] ; then
+        case "$STAT" in
+            "-") ATTRS="bgcolor='pale green'" ;;
+            "p") ATTRS="bgcolor='light blue'" ;;
+              *) ATTRS="bgcolor='pink'" ;;
+        esac
+        printf "<tr><td>%s&nbsp;</td><td %s>&nbsp;%s&nbsp;</td><td>&nbsp;%s</td></tr>" \
+            "$TYPE" "$ATTRS" "$STAT" "$DIR"
+        echo
+    else
+        printf "%-5s %-5s %s" "$TYPE" "$STAT" "$DIR"
+        echo
+    fi
 done
 [ "$FORMAT" = "html" ] && echo "</table>"
