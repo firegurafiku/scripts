@@ -1,8 +1,12 @@
 Miscellaneous scripts for Linux
 ===============================
-**Author:** [Pavel Kretov](mailto:firegurafiku@gmail.com)  
-**License:** [WTFPL of any version](<http://en.wikipedia.org/wiki/WTFPL>)  
+**Author:** [Pavel Kretov][1]  
+**License:** [WTFPL of any version][2]  
 **Languages:** Shell, Perl and Sed
 
-This repository contains certain scripts in various languages. They were useful
-for me in daily usage of Linux, may be they will be so for someone else.
+[1]: mailto:firegurafiku@gmail.com
+[2]: http://en.wikipedia.org/wiki/WTFPL
+
+This repository contains certain scripts in various scripting languages. They
+were useful for me in my daily usage of Linux, maybe they will be so for someone
+else. Check project wiki for more information about some of them.
