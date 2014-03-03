@@ -90,11 +90,12 @@ def xcaption(s):
 def ycaption(s):
     tickpad  = rcParams['ytick.major.pad']
     fontsize = rcParams['font.size']
-    plt.annotate(s, xy=(0,1), xytext=(-tickpad, fontsize/2),
+    plt.annotate(s, xy=(0,1), xytext=(-tickpad, (fontsize + tickpad)/2),
         ha='center',
         va='bottom',
         xycoords='axes fraction',
         textcoords='offset points')
+
 
 # Available command line options, their parameter and handlers.
 # This is the list of tuples (name, nargs, type, handler).
