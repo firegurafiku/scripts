@@ -4,7 +4,7 @@ import sys
 import os
 import re
 import argparse
-from matplotlib import rc
+from matplotlib import rc, rcParams
 from matplotlib import pyplot as plt
 
 
@@ -76,6 +76,25 @@ def plot(f):
     plt.plot(xs, ys)
 
 
+def xcaption(s):
+    tickpad  = rcParams['xtick.major.pad']
+    fontsize = rcParams['font.size']
+    plt.annotate(s, xy=(1,0), xytext=(0, -tickpad - fontsize),
+        ha='center',
+        va='top',
+        xycoords='axes fraction',
+        textcoords='offset points')
+
+
+def ycaption(s):
+    tickpad  = rcParams['ytick.major.pad']
+    fontsize = rcParams['font.size']
+    plt.annotate(s, xy=(0,1), xytext=(-tickpad, fontsize/2),
+        ha='center',
+        va='bottom',
+        xycoords='axes fraction',
+        textcoords='offset points')
+
 # Available command line options, their parameter and handlers.
 # This is the list of tuples (name, nargs, type, handler).
 options = [
@@ -95,6 +114,8 @@ options = [
     ("ylabel",      1, None,     lambda v:   plt.ylabel(decode(v))),
     ("xlim",        2, float,    lambda a,b: plt.xlim(a,b)),
     ("ylim",        2, float,    lambda a,b: plt.ylim(a,b)),
+    ("xcaption",    1, None,     lambda v:   xcaption(decode(v))),
+    ("ycaption",    1, None,     lambda v:   ycaption(decode(v))),
     ("plot",        1, None,     lambda f:   plot(decode(f)))]
 
 
