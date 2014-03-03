@@ -4,6 +4,7 @@ import sys
 import os
 import re
 import argparse
+import locale
 from matplotlib import rc, rcParams
 from matplotlib import pyplot as plt
 
@@ -120,6 +121,8 @@ options = [
 
 
 # --- main ---
+locale.setlocale(locale.LC_ALL, "")
+rc("axes.formatter", use_locale=True)
 
 parser = argparse.ArgumentParser()
 for (dest, nargs, argtype, handler) in options:
