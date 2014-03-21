@@ -2,7 +2,7 @@ Miscellaneous scripts for Linux
 ===============================
 **Author:** [Pavel Kretov][1]  
 **License:** [WTFPL of any version][2]  
-**Languages:** Shell, Perl and Sed
+**Languages:** Shell, Perl, Python and Sed
 
 [1]: mailto:firegurafiku@gmail.com
 [2]: http://en.wikipedia.org/wiki/WTFPL
