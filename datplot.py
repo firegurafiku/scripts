@@ -5,6 +5,7 @@ import os
 import re
 import argparse
 import locale
+from matplotlib import axis
 from matplotlib import rc, rcParams
 from matplotlib import pyplot as plt
 
@@ -36,7 +37,7 @@ def readFile(filename):
     xs = []
     ys = []
     for line in lines:
-        res = line.split("\t")
+        res = line.split()
         xs.append(float(res[0]))
         ys.append(float(res[1]))
 
@@ -100,12 +101,15 @@ def ycaption(s):
 # Available command line options, their parameter and handlers.
 # This is the list of tuples (name, nargs, type, handler).
 options = [
+    ("eval",        1, None,     lambda v:   eval(v)),
     ("format",      1, None,     lambda v:   setparam("format", v)),
     ("encoding",    1, None,     lambda v:   setparam("encoding", v)),
     ("mirror",      1, bool,     lambda v:   setparam("mirror", v)),
     ("line-color",  1, None,     lambda v:   rc("lines", color=v)),
     ("line-width",  1, None,     lambda v:   rc("lines", width=v)),
     ("line-style",  1, None,     lambda v:   rc("lines", style=v)),
+    ("marker",      1, None,     lambda v:   rc("lines", marker=v)),
+    ("markersize",  1, None,     lambda v:   rc("lines", markersize=v)),
     ("font-family", 1, None,     lambda v:   rc("font",  family=v)),
     ("font-weight", 1, None,     lambda v:   rc("font",  weigth=v)),
     ("font-size",   1, float,    lambda v:   rc("font",  size=v)),
