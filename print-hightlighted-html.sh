@@ -7,10 +7,10 @@
 # Licensed under the terms of WTFPL of any version.
 HELP="Usage: .sh OUTFILE FILE [FILE ...]"
 
-if [[ "$#" -lt "2" ]] ; then
-    echo "Usage: generate-hightlighted-html.sh OUTFILE FILE ..."
-    echo "Also enironment variable 'OPTIONS' is used for passing options"
-    echo "to 'source-hightlight' program"
+if [ "$#" -lt "2" ] ; then
+    echo "Usage: print-hightlighted-html.sh OUTFILE FILE [INPUTFILE ...]"  2>&1
+    echo "Enironment variable 'OPTIONS' is used for passing extra options" 2>&1
+    echo "to 'source-hightlight' program."                                 2>&1
     exit 1
 fi
 
@@ -26,5 +26,4 @@ do
         --out-format html \
         -i "$FILE" -o STDOUT >> "$OUTFILE"
 done
-
 echo "</body></html>" >> "$OUTFILE"
