@@ -68,10 +68,10 @@ USAGE="
 Usage: $0 [-adtHh?] [--] DIR [DIR ...]
 Arguments are directories to find repositories in. Options must precede
 arguments and stand for the following:
-  -a ("all")   -- ontput statuses for all repositories (default)
-  -d ("dirty") -- output statuses only for unclean repositories
-  -t ("text")  -- output in plain text (default)
-  -H ("HTML")  -- output in HTML format"
+  -a (\"all\")   -- ontput statuses for all repositories (default)
+  -d (\"dirty\") -- output statuses only for unclean repositories
+  -t (\"text\")  -- output in plain text (default)
+  -H (\"HTML\")  -- output in HTML format"
 
 MODE="all"
 FORMAT="text"
@@ -89,7 +89,6 @@ while getopts 'adtHh' OPT; do
 done
 
 shift `expr $OPTIND - 1`
-
 if [ "$#" -lt 1 ] ; then
     echo "$USAGE" >&2
     exit 1
@@ -121,3 +120,4 @@ do
     fi
 done
 [ "$FORMAT" = "html" ] && echo "</table>"
+
