@@ -82,6 +82,11 @@ done
 echo "}"
 } >"$TEMP"
 
+if [[ "$FIRST" == "yes" ]] ; then
+    echo "No kernels were found. Is '$BOOT_DIR' mounted?" 1>&2
+    exit 1
+fi
+
 OLD="$MOUNTPOINT/$REFIND_CONFIG"
 NEW="$TEMP"
 if cmp "$OLD" "$NEW" ; then
