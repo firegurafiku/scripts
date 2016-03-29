@@ -4,8 +4,15 @@
 set -o errexit
 set -o nounset
 
+function checkDomain {
+    fqdn="$1"
+    whois "$fqdn" |
+    egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri' &&
+    echo "$fqdn: available" || echo "$fqdn: not available" 
+}
+
 if [ "$#" == "0" ]; then
-    echo "You need tu supply at least one argument!"
+    echo "You need to supply at least one argument!"
     exit 1
 fi
 
@@ -13,11 +20,13 @@ DOMAINS="
     .com .co.uk .net .info .mobi .org .tel .biz
     .tv .cc .eu .ru .su .in .it .sk .com.au"
  
-for N in $@ ; do 
-    for D in $DOMAINS ; do
-        whois "$N$D" |
-        egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri' &&
-        echo "$N$D: available" 
-    done
+for N in $@ ; do
+    if [[ "$N" = *. ]] ; then
+        checkDomain "${N%%.}"
+    else
+        for D in $DOMAINS ; do
+            checkDomain "$N$D"
+        done
+    fi
 done 
 
