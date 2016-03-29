@@ -17,7 +17,7 @@ if [ "$#" == "0" ]; then
 fi
 
 DOMAINS="
-    .com .co.uk .net .info .mobi .org .tel .biz
+    .com .co.uk .net .info .mobi .org
     .tv .cc .eu .ru .su .in .it .sk .com.au"
  
 for N in $@ ; do
