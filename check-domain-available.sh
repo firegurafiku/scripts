@@ -5,28 +5,29 @@ set -o errexit
 set -o nounset
 
 function checkDomain {
-    fqdn="$1"
+    local fqdn="$1"
     whois "$fqdn" |
     egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri' &&
     echo "$fqdn: available" || echo "$fqdn: not available" 
 }
 
 if [ "$#" == "0" ]; then
-    echo "You need to supply at least one argument!"
+    echo "You need to supply at least one argument!" 2>&1
     exit 1
 fi
 
-DOMAINS="
-    .com .co.uk .net .info .mobi .org
-    .tv .cc .eu .ru .su .in .it .sk .com.au"
- 
-for N in $@ ; do
-    if [[ "$N" = *. ]] ; then
-        checkDomain "${N%%.}"
+declare -ar suffixes=(
+    .com .co.uk .net .info .mobi .org .io
+    .tv .cc .eu .ru .su .in .it .sk .com.au)
+
+declare name
+declare suffix
+for name in "$@" ; do
+    if [[ "$name" = *. ]]; then
+        checkDomain "${name%%.}"
     else
-        for D in $DOMAINS ; do
-            checkDomain "$N$D"
+        for suffix in "${suffixes[@]}"; do
+            checkDomain "$name$suffix"
         done
     fi
 done 
-
